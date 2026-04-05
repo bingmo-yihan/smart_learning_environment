@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>智境·元立方 - 新一代智慧学习环境主动式调控系统</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#5B7BFF',
+            purple: '#B967FF',
+            pink: '#FF72B6',
+          },
+          fontFamily: {
+            future: ['Chakra Petch', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .text-gradient {
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        background-image: linear-gradient(90deg, #5B7BFF, #B967FF, #FF72B6);
+      }
+      .btn-gradient {
+        background: linear-gradient(90deg, #5B7BFF, #B967FF, #FF72B6);
+      }
+      .border-glow { border: 1px solid rgba(185,103,255,0.3); }
+      .glow-hover { transition: 0.3s; }
+      .glow-hover:hover { box-shadow: 0 0 18px rgba(185,103,255,0.5); transform: translateY(-2px); }
+      .fade-in { opacity: 0; transform: translateY(20px); transition: 0.7s ease; }
+      .fade-in.visible { opacity: 1; transform: translateY(0); }
+      .collapse-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; }
+      .collapse-open .collapse-content { max-height: 1200px; }
+      .line-decoration { position: relative; }
+      .line-decoration::before {
+        content: ''; position: absolute; width: 60px; height: 2px;
+        background: linear-gradient(90deg,#5B7BFF,#B967FF,#FF72B6); left: 50%; top: -10px;
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&display=swap');
+    * { margin:0; padding:0; box-sizing:border-box; }
+    /* 高级低沉奢华蓝紫玫红渐变（深色质感，不刺眼） */
+    body {
+      background: linear-gradient(135deg, #1E2659, #4A3A7E, #7A3A68);
+      background-attachment: fixed;
+      color: #fff;
+      font-family: 'Chakra Petch', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    #particles-js { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; opacity:0.4; }
+
+    .cube-wrapper { perspective: 1500px; display:flex; justify-content:center; align-items:center; width:220px; height:220px; margin:0 auto; cursor:grab; }
+    .cube { position:relative; width: 180px; height: 180px; transform-style:preserve-3d; transition:transform 0.15s ease; }
+    .cube-face {
+      position:absolute; width:100%; height:100%;
+      background:rgba(255,255,255,0.05);
+      border:2px solid rgba(255,255,255,0.25);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:600; font-size:15px;
+      color:#fff; text-shadow:0 0 6px rgba(255,255,255,0.6);
+    }
+    .front  { transform: translateZ(90px); }
+    .back   { transform: rotateY(180deg) translateZ(90px); }
+    .right  { transform: rotateY(90deg) translateZ(90px); }
+    .left   { transform: rotateY(-90deg) translateZ(90px); }
+    .top    { transform: rotateX(90deg) translateZ(90px); }
+    .bottom { transform: rotateX(-90deg) translateZ(90px); }
+  </style>
+</head>
+
+<body class="scroll-smooth">
+<div id="particles-js"></div>
+
+<header class="fixed w-full top-0 z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
+  <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+    <div class="flex items-center gap-2">
+      <i class="fa fa-cube text-gradient text-2xl"></i>
+      <h1 class="font-future text-xl md:text-2xl font-bold text-gradient">智境·元立方</h1>
+    </div>
+    <nav class="hidden md:flex gap-7 text-[15px]">
+      <a href="#home" class="hover:text-gradient transition">首页</a>
+      <a href="#about" class="hover:text-gradient transition">项目概况</a>
+      <a href="#tech" class="hover:text-gradient transition">技术体系</a>
+      <a href="#product" class="hover:text-gradient transition">产品方案</a>
+      <a href="#teacher" class="hover:text-gradient transition">指导教师</a>
+      <a href="#market" class="hover:text-gradient transition">市场价值</a>
+      <a href="#contact" class="hover:text-gradient transition">联系我们</a>
+    </nav>
+    <button class="md:hidden text-gradient text-xl" onclick="document.getElementById('m').classList.toggle('hidden')">
+      <i class="fa fa-bars"></i>
+    </button>
+  </div>
+  <div id="m" class="hidden md:hidden bg-black/30 backdrop-blur absolute w-full border-b border-white/10">
+    <div class="flex flex-col px-6 py-4 gap-3">
+      <a href="#home" class="py-2 hover:text-gradient">首页</a>
+      <a href="#about" class="py-2 hover:text-gradient">项目概况</a>
+      <a href="#tech" class="py-2 hover:text-gradient">技术体系</a>
+      <a href="#product" class="py-2 hover:text-gradient">产品方案</a>
+      <a href="#teacher" class="py-2 hover:text-gradient">指导教师</a>
+      <a href="#market" class="py-2 hover:text-gradient">市场价值</a>
+      <a href="#contact" class="py-2 hover:text-gradient">联系我们</a>
+    </div>
+  </div>
+</header>
+
+<section id="home" class="min-h-screen flex items-center justify-center px-4 pt-24">
+  <div class="container mx-auto text-center">
+    <h1 class="font-future text-[clamp(2rem,5vw,4.2rem)] font-bold text-gradient leading-tight mb-3">
+      智境·元立方
+    </h1>
+    <p class="text-lg md:text-xl text-white/80 max-w-3xl mx-auto mb-8">
+      新一代智慧学习环境主动式调控系统｜边缘计算 · 全息感知 · 碳普惠 · 绿色校园
+    </p>
+
+    <div class="cube-wrapper" id="cubeWrap">
+      <div class="cube" id="cube">
+        <div class="cube-face front">智慧调控</div>
+        <div class="cube-face back">边缘计算</div>
+        <div class="cube-face left">碳普惠</div>
+        <div class="cube-face right">绿色校园</div>
+        <div class="cube-face top">全息感知</div>
+        <div class="cube-face bottom">主动适配</div>
+      </div>
+    </div>
+    <p class="text-xs text-white/50 mt-3 mb-10">👆 鼠标拖拽旋转 / 右键点击暂停/左键继续</p>
+
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="#product" class="btn-gradient text-white px-8 py-3 rounded-lg glow-hover font-medium">查看产品体系</a>
+      <a href="#contact" class="border border-white/30 text-gradient px-8 py-3 rounded-lg glow-hover font-medium">合作咨询</a>
+    </div>
+
+    <div class="mt-14 grid grid-cols-2 md:grid-cols-4 gap-5 max-w-4xl mx-auto">
+      <div class="border-glow p-5 rounded-lg bg-white/10 glow-hover">
+        <i class="fa fa-bolt text-gradient text-3xl mb-2"></i>
+        <h3 class="text-2xl font-bold">100ms</h3>
+        <p class="text-sm text-white/60">极速响应</p>
+      </div>
+      <div class="border-glow p-5 rounded-lg bg-white/10 glow-hover">
+        <i class="fa fa-line-chart text-gradient text-3xl mb-2"></i>
+        <h3 class="text-2xl font-bold">42%</h3>
+        <p class="text-sm text-white/60">能效提升</p>
+      </div>
+      <div class="border-glow p-5 rounded-lg bg-white/10 glow-hover">
+        <i class="fa fa-volume-down text-gradient text-3xl mb-2"></i>
+        <h3 class="text-2xl font-bold">32dB</h3>
+        <p class="text-sm text-white/60">静音运行</p>
+      </div>
+      <div class="border-glow p-5 rounded-lg bg-white/10 glow-hover">
+        <i class="fa fa-shield text-gradient text-3xl mb-2"></i>
+        <h3 class="text-2xl font-bold">专利</h3>
+        <p class="text-sm text-white/60">自主产权</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="py-20 px-4 fade-in">
+  <div class="container mx-auto max-w-6xl">
+    <div class="text-center mb-10 line-decoration">
+      <h2 class="font-future text-3xl md:text-4xl font-bold text-gradient mb-2">项目概况</h2>
+      <p class="text-white/70">Project Overview</p>
+    </div>
+
+    <div class="border-glow rounded-xl mb-4 bg-white/10">
+      <div class="collapse-toggle p-5 flex justify-between items-center cursor-pointer font-future font-semibold text-gradient">
+        <i class="fa fa-lightbulb-o mr-2"></i> 执行概要
+        <i class="fa fa-angle-down"></i>
+      </div>
+      <div class="collapse-content p-5 pt-0 text-white/80 text-sm md:text-base leading-relaxed">
+        本项目聚焦校园学习场景中“环境适配差、能耗管控粗放、运维效率低”等痛点，打造以“学习环境动态适人性”理论为核心，集智能硬件、数据服务、碳普惠体系于一体的闭环解决方案，构建健康、高效、低碳的智慧学习空间。项目实现理论创新、技术创新、模式创新三大突破，以高校与中小学为核心市场，形成“硬件+数据+碳普惠”可持续商业模式。
+      </div>
+    </div>
+
+    <div class="border-glow rounded-xl mb-4 bg-white/10">
+      <div class="collapse-toggle p-5 flex justify-between items-center cursor-pointer font-future font-semibold text-gradient">
+        <i class="fa fa-flag mr-2"></i> 项目背景与意义
+        <i class="fa fa-angle-down"></i>
+      </div>
+      <div class="collapse-content p-5 pt-0 text-white/80 text-sm md:text-base leading-relaxed">
+        在国家“教育数字化”与“双碳”战略双重驱动下，智慧校园已成为教育现代化核心方向。传统教室、实验室、图书馆普遍存在调控依赖人工、能耗高、舒适度低、设备闲置等问题，高校建筑能耗占社会总能耗8%，生均能耗是居民2-4倍。本项目通过智能感知、边缘计算、主动调控，实现学习环境最优体验与低碳节能，填补行业市场空白。
+      </div>
+    </div>
+
+    <div class="border-glow rounded-xl mb-4 bg-white/10">
+      <div class="collapse-toggle p-5 flex justify-between items-center cursor-pointer font-future font-semibold text-gradient">
+        <i class="fa fa-trophy mr-2"></i> 团队简介
+        <i class="fa fa-angle-down"></i>
+      </div>
+      <div class="collapse-content p-5 pt-0 text-white/80 text-sm md:text-base leading-relaxed">
+        团队名称：草台班子大杂烩<br>
+        学校：郑州科技学院<br>
+        组别：科技创新和未来产业<br>
+        负责人：刘文静（信息工程学院 软件工程）<br>
+        成员由软件工程、电子信息、集成电路、计算机科学等跨专业本科生组成，覆盖技术研发、硬件开发、数据处理、市场运营全链条，能力互补、结构完整。
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tech" class="py-20 px-4 fade-in">
+  <div class="container mx-auto max-w-6xl">
+    <div class="text-center mb-10 line-decoration">
+      <h2 class="font-future text-3xl md:text-4xl font-bold text-gradient mb-2">技术体系</h2>
+      <p class="text-white/70">Technology System</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="border-glow p-6 rounded-xl bg-white/10 glow-hover text-center">
+        <i class="fa fa-microchip text-gradient text-4xl mb-4"></i>
+        <h3 class="text-lg font-future text-gradient font-semibold mb-2">边缘计算</h3>
+        <p class="text-xs text-white/70">本地毫秒级决策，响应＜100ms，断网可运行</p>
+      </div>
+      <div class="border-glow p-6 rounded-xl bg-white/10 glow-hover text-center">
+        <i class="fa fa-rss text-gradient text-4xl mb-4"></i>
+        <h3 class="text-lg font-future text-gradient font-semibold mb-2">多维感知</h3>
+        <p class="text-xs text-white/70">温湿度、CO₂、光照、噪声、VOC、PM2.5全覆盖</p>
+      </div>
+      <div class="border-glow p-6 rounded-xl bg-white/10 glow-hover text-center">
+        <i class="fa fa-code text-gradient text-4xl mb-4"></i>
+        <h3 class="text-lg font-future text-gradient font-semibold mb-2">自适应算法</h3>
+        <p class="text-xs text-white/70">动态适人性模型，智能匹配学习场景</p>
+      </div>
+    </div>
+
+    <div class="mt-8 border-glow rounded-xl p-6 bg-white/10">
+      <div class="collapse-toggle p-4 flex justify-between items-center cursor-pointer font-future font-semibold text-gradient">
+        <i class="fa fa-cogs mr-2"></i> 核心技术详情
+        <i class="fa fa-angle-down"></i>
+      </div>
+      <div class="collapse-content p-5 text-white/80 text-sm leading-relaxed">
+        <p class="mb-2">✅ 学习环境动态适人性理论模型</p>
+        <p class="mb-2">✅ 异构环境自适应调控算法</p>
+        <p class="mb-2">✅ 仿生涡流风道低噪设计</p>
+        <p class="mb-2">✅ 多传感器数据融合技术</p>
+        <p class="mb-2">✅ 碳普惠积分核证与激励体系</p>
+        <p>✅ 云端数据诊断与可视化平台</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="product" class="py-20 px-4 fade-in">
+  <div class="container mx-auto max-w-6xl">
+    <div class="text-center mb-10 line-decoration">
+      <h2 class="font-future text-3xl md:text-4xl font-bold text-gradient mb-2">产品方案</h2>
+      <p class="text-white/70">Product Solution</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="border-glow rounded-xl overflow-hidden bg-white/10 glow-hover">
+        <div class="h-44 bg-gradient-to-br from-primary/10 to-pink/10 flex items-center justify-center">
+          <i class="fa fa-graduation-cap text-5xl text-gradient"></i>
+        </div>
+        <div class="p-6">
+          <h3 class="font-future text-lg text-gradient font-semibold mb-2">教室标准版</h3>
+          <div class="border-glow rounded mb-3 bg-black/20">
+            <div class="collapse-toggle p-3 text-sm flex justify-between items-center cursor-pointer text-gradient">查看详情</div>
+            <div class="collapse-content p-3 pt-0 text-xs text-white/70">
+              适用于普通教室、合班教室、阶梯教室。支持人数识别、智能通风、灯光联动、场景自动切换、无人自动节能。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-glow rounded-xl overflow-hidden bg-white/10 glow-hover">
+        <div class="h-44 bg-gradient-to-br from-purple/10 to-pink/10 flex items-center justify-center">
+          <i class="fa fa-book text-5xl text-gradient"></i>
+        </div>
+        <div class="p-6">
+          <h3 class="font-future text-lg text-gradient font-semibold mb-2">图书馆静音版</h3>
+          <div class="border-glow rounded mb-3 bg-black/20">
+            <div class="collapse-toggle p-3 text-sm flex justify-between items-center cursor-pointer text-gradient">查看详情</div>
+            <div class="collapse-content p-3 pt-0 text-xs text-white/70">
+              噪音≤32dB，适用于阅览室、自习室、图书馆。智能调节风速亮度，保护专注度，搭配碳积分激励。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-glow rounded-xl overflow-hidden bg-white/10 glow-hover">
+        <div class="h-44 bg-gradient-to-br from-primary/10 to-purple/10 flex items-center justify-center">
+          <i class="fa fa-flask text-5xl text-gradient"></i>
+        </div>
+        <div class="p-6">
+          <h3 class="font-future text-lg text-gradient font-semibold mb-2">实验室增强版</h3>
+          <div class="border-glow rounded mb-3 bg-black/20">
+            <div class="collapse-toggle p-3 text-sm flex justify-between items-center cursor-pointer text-gradient">查看详情</div>
+            <div class="collapse-content p-3 pt-0 text-xs text-white/70">
+              工业级精度，防腐防尘耐高温，支持有害气体监测、高精度环境控制、设备安全监控。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="teacher" class="py-20 px-4 fade-in">
+  <div class="container mx-auto max-w-6xl">
+    <div class="text-center mb-12 line-decoration">
+      <h2 class="font-future text-3xl md:text-4xl font-bold text-gradient mb-2">指导教师团队</h2>
+      <p class="text-white/70">Instructors</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="border-glow p-6 rounded-xl bg-white/10 glow-hover">
+        <div class="w-16 h-16 rounded-full border-2 border-white/30 flex items-center justify-center mx-auto mb-4">
+          <i class="fa fa-user-graduate text-gradient text-2xl"></i>
+        </div>
+        <h3 class="text-gradient font-future text-center text-lg mb-1">史克红</h3>
+        <p class="text-white/60 text-xs text-center mb-3">信息工程学院｜副教授</p>
+        <p class="text-xs text-white/70 text-center leading-relaxed">
+          主攻科创项目研发与专利转化，拥有2项实用新型专利，指导多项省级大创项目，擅长专利技术落地与赛事指导。
+        </p>
+      </div>
+
+      <div class="border-glow p-6 rounded-xl bg-white/10 glow-hover">
+        <div class="w-16 h-16 rounded-full border-2 border-white/30 flex items-center justify-center mx-auto mb-4">
+          <i class="fa fa-user-graduate text-gradient text-2xl"></i>
+        </div>
+        <h3 class="text-gradient font-future text-center text-lg mb-1">程胜月</h3>
+        <p class="text-white/60 text-xs text-center mb-3">信息工程学院｜教研室主任</p>
+        <p class="text-xs text-white/70 text-center leading-relaxed">
+          主持河南省科技攻关计划项目，指导学生获蓝桥杯、中国国际大学生创新大赛等多项省级奖项，算法与系统研发专家。
+        </p>
+      </div>
+
+      <div class="border-glow p-6 rounded-xl bg-white/10 glow-hover">
+        <div class="w-16 h-16 rounded-full border-2 border-white/30 flex items-center justify-center mx-auto mb-4">
+          <i class="fa fa-user-graduate text-gradient text-2xl"></i>
+        </div>
+        <h3 class="text-gradient font-future text-center text-lg mb-1">齐豪</h3>
+        <p class="text-white/60 text-xs text-center mb-3">信息工程学院｜助教</p>
+        <p class="text-xs text-white/70 text-center leading-relaxed">
+          研究方向深度学习与人工智能，擅长鸿蒙开发、大模型应用，指导学生获多项程序设计竞赛奖项。
+        </p>
+      </div>
+
+      <div class="border-glow p-6 rounded-xl bg-white/10 glow-hover">
+        <div class="w-16 h-16 rounded-full border-2 border-white/30 flex items-center justify-center mx-auto mb-4">
+          <i class="fa fa-user-graduate text-gradient text-2xl"></i>
+        </div>
+        <h3 class="text-gradient font-future text-center text-lg mb-1">牛渤超</h3>
+        <p class="text-white/60 text-xs text-center mb-3">信息工程学院｜助教</p>
+        <p class="text-xs text-white/70 text-center leading-relaxed">
+          环境工程领域专家，拥有发明专利，发表多篇SCI论文，擅长技术创新、项目优化与创新点提炼。
+        </p>
+      </div>
+
+      <div class="border-glow p-6 rounded-xl bg-white/10 glow-hover">
+        <div class="w-16 h-16 rounded-full border-2 border-white/30 flex items-center justify-center mx-auto mb-4">
+          <i class="fa fa-user-graduate text-gradient text-2xl"></i>
+        </div>
+        <h3 class="text-gradient font-future text-center text-lg mb-1">王柳</h3>
+        <p class="text-white/60 text-xs text-center mb-3">电气工程学院｜助教</p>
+        <p class="text-xs text-white/70 text-center leading-relaxed">
+          专注教育管理与心理健康研究，具备扎实教育理论功底，为团队建设、项目运营提供专业支持。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="market" class="py-20 px-4 fade-in">
+  <div class="container mx-auto max-w-6xl">
+    <div class="text-center mb-10 line-decoration">
+      <h2 class="font-future text-3xl md:text-4xl font-bold text-gradient mb-2">市场与商业模式</h2>
+      <p class="text-white/70">Market & Business</p>
+    </div>
+
+    <div class="border-glow rounded-xl p-6 bg-white/10 mb-6">
+      <div class="collapse-toggle p-4 flex justify-between items-center cursor-pointer font-future font-semibold text-gradient">
+        <i class="fa fa-shopping-bag mr-2"></i> 市场分析
+        <i class="fa fa-angle-down"></i>
+      </div>
+      <div class="collapse-content p-5 text-white/80 text-sm leading-relaxed">
+        智慧教育市场2025年规模超2300亿元，智慧教室年增速26.4%。高校、中小学、公共图书馆均有强烈改造需求。现有产品“重硬件、轻服务”，本项目以场景化、智能化、低碳化占据差异化优势。
+      </div>
+    </div>
+
+    <div class="border-glow rounded-xl p-6 bg-white/10 mb-6">
+      <div class="collapse-toggle p-4 flex justify-between items-center cursor-pointer font-future font-semibold text-gradient">
+        <i class="fa fa-money mr-2"></i> 盈利模式
+        <i class="fa fa-angle-down"></i>
+      </div>
+      <div class="collapse-content p-5 text-white/80 text-sm leading-relaxed">
+        1. 硬件销售收入（教室/图书馆/实验室终端）<br>
+        2. 数据服务订阅费（诊断报告、优化方案）<br>
+        3. 碳普惠运营与碳交易佣金<br>
+        4. 节能效益分成 + 政府专项补贴
+      </div>
+    </div>
+
+    <div class="border-glow rounded-xl p-6 bg-white/10">
+      <div class="collapse-toggle p-4 flex justify-between items-center cursor-pointer font-future font-semibold text-gradient">
+        <i class="fa fa-road mr-2"></i> 三年发展规划
+        <i class="fa fa-angle-down"></i>
+      </div>
+      <div class="collapse-content p-5 text-white/80 text-sm leading-relaxed">
+        ✅ 2026 研发打磨期：校内试点、产品定型<br>
+        ✅ 2027 场景落地期：省内10所高校覆盖、营收500万<br>
+        ✅ 2028 市场拓展期：中部区域辐射、营收破1000万
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 px-4 fade-in">
+  <div class="container mx-auto max-w-6xl">
+    <div class="text-center mb-10 line-decoration">
+      <h2 class="font-future text-3xl md:text-4xl font-bold text-gradient mb-2">社会价值</h2>
+      <p class="text-white/70">Social Value</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="border-glow p-6 rounded-xl bg-white/10 glow-hover">
+        <i class="fa fa-leaf text-gradient text-3xl mb-4"></i>
+        <h3 class="text-gradient font-future text-lg mb-2">绿色低碳</h3>
+        <p class="text-xs text-white/70">能效提升40%，降低校园能耗与碳排放，助力双碳目标。</p>
+      </div>
+      <div class="border-glow p-6 rounded-xl bg-white/10 glow-hover">
+        <i class="fa fa-graduation-cap text-gradient text-3xl mb-4"></i>
+        <h3 class="text-gradient font-future text-lg mb-2">教育赋能</h3>
+        <p class="text-xs text-white/70">优化学习环境，提升专注度与学习效率，实现环境育人。</p>
+      </div>
+      <div class="border-glow p-6 rounded-xl bg-white/10 glow-hover">
+        <i class="fa fa-database text-gradient text-3xl mb-4"></i>
+        <h3 class="text-gradient font-future text-lg mb-2">数字转型</h3>
+        <p class="text-xs text-white/70">推动校园管理数字化、智能化、精细化，降低运维成本。</p>
+      </div>
+      <div class="border-glow p-6 rounded-xl bg-white/10 glow-hover">
+        <i class="fa fa-users text-gradient text-3xl mb-4"></i>
+        <h3 class="text-gradient font-future text-lg mb-2">实践育人</h3>
+        <p class="text-xs text-white/70">碳普惠培养低碳意识，提升学生数字素养与社会责任感。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="py-20 px-4 fade-in">
+  <div class="container mx-auto max-w-5xl">
+    <div class="text-center mb-10 line-decoration">
+      <h2 class="font-future text-3xl md:text-4xl font-bold text-gradient mb-2">联系我们</h2>
+      <p class="text-white/70">Contact Us</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="border-glow p-6 rounded-xl bg-white/10">
+        <h3 class="font-future text-xl text-gradient font-semibold mb-5">联系方式</h3>
+        <ul class="space-y-4 text-white/80">
+          <li class="flex items-center gap-3"><i class="fa fa-university text-gradient w-5"></i> 郑州科技学院 信息工程学院</li>
+          <li class="flex items-center gap-3"><i class="fa fa-user text-gradient w-5"></i> 负责人：刘文静</li>
+          <li class="flex items-center gap-3"><i class="fa fa-phone text-gradient w-5"></i> 15036876147</li>
+          <li class="flex items-center gap-3"><i class="fa fa-envelope text-gradient w-5"></i> 2803142736@qq.com</li>
+        </ul>
+      </div>
+      <div class="border-glow p-6 rounded-xl bg-white/10">
+        <h3 class="font-future text-xl text-gradient font-semibold mb-5">合作留言</h3>
+        <form class="space-y-4">
+          <input placeholder="单位/姓名" class="w-full bg-black/20 border border-white/20 rounded px-4 py-2 outline-none focus:border-white/50">
+          <input placeholder="联系电话" class="w-full bg-black/20 border border-white/20 rounded px-4 py-2 outline-none focus:border-white/50">
+          <textarea rows="4" placeholder="留言内容" class="w-full bg-black/20 border border-white/20 rounded px-4 py-2 outline-none focus:border-white/50"></textarea>
+          <button class="w-full btn-gradient text-white py-2 rounded glow-hover font-medium">提交</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-white/10 py-6 text-center text-sm text-white/40">
+  <p class="font-future text-gradient">© 2026 智境·元立方｜郑州科技学院｜挑战杯科创项目</p>
+</footer>
+
+<script>
+particlesJS("particles-js",{
+  particles:{number:{value:85},color:{value:"#ffffff"},shape:{type:"circle"},
+  opacity:{value:0.4},size:{value:1.8},line_linked:{enable:true,distance:120,color:"#ffffff",opacity:0.1,width:1},move:{enable:true,speed:1}},
+  interactivity:{onhover:{enable:true,mode:"grab"}},retina_detect:true
+});
+
+const faders = document.querySelectorAll('.fade-in');
+const ob = new IntersectionObserver(e=>{e.forEach(i=>i.isIntersecting&&i.target.classList.add('visible'))},{threshold:0.1});
+faders.forEach(e=>ob.observe(e));
+
+document.querySelectorAll('.collapse-toggle').forEach(toggle=>{
+  toggle.addEventListener('click',()=>{
+    const parent = toggle.parentElement;
+    parent.classList.toggle('collapse-open');
+  });
+});
+
+const cube = document.getElementById('cube');
+const wrap = document.getElementById('cubeWrap');
+let auto = true;
+let x=0,y=0,lastX,lastY,drag=false;
+
+function rotate(){
+  if(auto){x+=0.15;y+=0.08;cube.style.transform=`rotateX(${y}deg) rotateY(${x}deg`;}
+  requestAnimationFrame(rotate);
+}
+
+wrap.addEventListener('mousedown',(e)=>{drag=true;auto=false;lastX=e.clientX;lastY=e.clientY;wrap.style.cursor='grabbing';});
+window.addEventListener('mousemove',(e)=>{
+  if(!drag)return;
+  let dx = e.clientX-lastX;
+  let dy = e.clientY-lastY;
+  x+=dx*0.5; y-=dy*0.5;
+  cube.style.transform=`rotateX(${y}deg) rotateY(${x}deg)`;
+  lastX=e.clientX; lastY=e.clientY;
+});
+window.addEventListener('mouseup',()=>{drag=false;wrap.style.cursor='grab';});
+wrap.addEventListener('click',()=>{auto=!auto;});
+rotate();
+
+document.querySelectorAll('#m a').forEach(a=>a.addEventListener('click',()=>{
+  document.getElementById('m').classList.add('hidden');
+}));
+</script>
+</body>
+</html>
