@@ -6,7 +6,8 @@ smart_learning_environment
 软件架构说明
 
 
-安装教程
+官方网站地址
+https://bingmo-yihan.github.io/smart_learning_environment/元立方.html
 
 1.  无任何作用
 2.  xxxx
