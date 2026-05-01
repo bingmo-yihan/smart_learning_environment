@@ -450,9 +450,9 @@
   </div>
 </section>
 
-<!-- 联系我们 → 提交直接发邮件到 2803142736@qq.com -->
+<!-- 联系我们（原版样式 + 可提交到邮箱） -->
 <section id="contact" class="py-20 px-4 fade-in">
-  <div class="container mx-auto max-w-500">
+  <div class="container mx-auto max-w-5xl">
     <div class="text-center mb-10 line-decoration">
       <h2 class="font-future text-3xl md:text-4xl font-bold text-gradient mb-2">联系我们</h2>
       <p class="text-white/70">Contact Us</p>
@@ -468,36 +468,31 @@
         </ul>
       </div>
 
-      <!-- 表单：提交直接发邮件到你邮箱 -->
       <div class="border-glow p-6 rounded-xl bg-white/10">
         <h3 class="font-future text-xl text-gradient font-semibold mb-5">合作留言</h3>
 
-        <form
-          action="https://formsubmit.co/2101487235@qq.com"
-          method="POST"
-          class="space-y-4"
-        >
+        <!-- 完全保留你原来的样式 + 增加提交邮箱 -->
+        <form action="https://formsubmit.co/2803142736@qq.com" method="POST" class="space-y-4">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_subject" value="元立方官网 - 新留言通知">
-          <input type="hidden" name="_next" value="">
-
-          <input
-            name="name"
-            placeholder="单位/姓名"
-            class="w-full bg-black/20 border border-white/20 rounded px-4 py-2 outline-none focus:border-white/50"
+          
+          <input 
+            name="name" 
+            placeholder="单位/姓名" 
+            class="w-full bg-black/20 border border-white/20 rounded px-4 py-2 outline-none focus:border-white/50" 
             required
           >
-          <input
-            name="phone"
-            placeholder="联系电话"
-            class="w-full bg-black/20 border border-white/20 rounded px-4 py-2 outline-none focus:border-white/50"
+          <input 
+            name="phone" 
+            placeholder="联系电话" 
+            class="w-full bg-black/20 border border-white/20 rounded px-4 py-2 outline-none focus:border-white/50" 
             required
           >
-          <textarea
-            name="message"
-            rows="4"
-            placeholder="留言内容"
-            class="w-full bg-black/20 border border-white/20 rounded px-4 py-2 outline-none focus:border-white/50"
+          <textarea 
+            name="message" 
+            rows="4" 
+            placeholder="留言内容" 
+            class="w-full bg-black/20 border border-white/20 rounded px-4 py-2 outline-none focus:border-white/50" 
             required
           ></textarea>
 
